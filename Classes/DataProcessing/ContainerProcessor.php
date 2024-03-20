@@ -17,6 +17,7 @@ use B13\Container\Domain\Factory\PageView\Frontend\ContainerFactory;
 use B13\Container\Domain\Model\Container;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -112,6 +113,7 @@ class ContainerProcessor implements DataProcessorInterface
         $conf = [
             'tables' => 'tt_content',
         ];
+        /** @var LanguageAspect $languageAspect */
         $languageAspect = $this->context->getAspect('language');
         foreach ($children as &$child) {
             if (!isset($processorConfiguration['skipRenderingChildContent']) || (int)$processorConfiguration['skipRenderingChildContent'] === 0) {
