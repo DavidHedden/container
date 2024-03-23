@@ -254,20 +254,18 @@ class Registry implements SingletonInterface
         // group containers by group
         $groupedByGroup = [];
         $defaultGroup = 'container';
-        if ($typo3Version->getMajorVersion() < 12) {
-            foreach ($GLOBALS['TCA']['tt_content']['containerConfiguration'] as $cType => $containerConfiguration) {
-                if ($containerConfiguration['registerInNewContentElementWizard'] === true) {
-                    $group = $containerConfiguration['group'] !== '' ? $containerConfiguration['group'] : $defaultGroup;
-                    if (empty($groupedByGroup[$group])) {
-                        $groupedByGroup[$group] = [];
-                    }
-                    $groupedByGroup[$group][$cType] = $containerConfiguration;
+        foreach ($GLOBALS['TCA']['tt_content']['containerConfiguration'] as $cType => $containerConfiguration) {
+            if ($containerConfiguration['registerInNewContentElementWizard'] === true) {
+                $group = $containerConfiguration['group'] !== '' ? $containerConfiguration['group'] : $defaultGroup;
+                if (empty($groupedByGroup[$group])) {
+                    $groupedByGroup[$group] = [];
                 }
-                $pageTs .= LF . 'mod.web_layout.tt_content.preview {
+                $groupedByGroup[$group][$cType] = $containerConfiguration;
+            }
+            $pageTs .= LF . 'mod.web_layout.tt_content.preview {
 ' . $cType . ' = ' . $containerConfiguration['backendTemplate'] . '
 }
 ';
-            }
         }
 
         foreach ($groupedByGroup as $group => $containerConfigurations) {
